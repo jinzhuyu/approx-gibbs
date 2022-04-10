@@ -96,7 +96,7 @@ prop_approx_likeli = function(coeff_curr, coeff_curr_id, hyper_param_curr, ...){
   denominator = hyper_param_curr[2]*cal_sum_each_group(1/exact_var*X[,coeff_curr_id]^2) + 1
   
   mu_hat = numerator/denominator
-  sigma_hat = sqrt(hyper_param_curr[2]/denominator)
+  sigma_hat = sqrt(denominator/(4*hyper_param_curr[2]))
   
   coeff_curr_new_1d = rnorm(n_group, mean=mu_hat, sd=sigma_hat)
   
