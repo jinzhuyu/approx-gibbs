@@ -20,5 +20,3 @@ Install: ```install.packages(c('bayesplot', 'LaplacesDemon', 'ggplot2', 'mcmcse'
 # Execution
 Simply run the file name after each dataset
 
-packageVersion(c('bayesplot', 'LaplacesDemon', 'ggplot2','mcmcse', 'tidyr', 'plyr'))
-
