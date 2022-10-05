@@ -19,12 +19,16 @@ data_list = data_list[, c(1,3,6,7)]
 t_exp_before = 5 + 1
 data_list[,2] = data_list[,2] + t_exp_before
 
+# increase counts (linear transform) due to the presence of counts smaller than 5
+min_count = 5  # minimum count with sufficiently accurate approximation
+test_pos = data_list[, 4]   
 # remove rows with zero positive cases
-scale_factor = 5
-data_list[, 3] = data_list[, 3]*scale_factor
-data_list[, 4] = data_list[, 4]*scale_factor
-test_pos = data_list[, 4]   # scale up due to presence of very small counts
-data_list_new = data_list[which(!test_pos == 0),]
+if (min(test_pos) <= min_count){
+    data_list[, 4] = data_list[, 4] + min_count
+    # data_list_new = data_list[which(!test_pos == 0),]
+  }else{
+    data_list_new = data_list
+  }
 
 # add a group-level covariate~norm(0,1)
 # find group id
@@ -94,7 +98,7 @@ gibbs_fit = fit_gibbs(data_gibbs, n_keep, n_warmup, n_chain)
 index_good = (n_warmup+1):(n_warmup+n_keep)
 
 # value of performance metrics
-metric_all = cal_metric(stan_fit, gibbs_fit, y, print_out=1)
+metric_all = cal_metric(stan_fit, gibbs_fit, y, print_out=TRUE)
 metric_all
 
 

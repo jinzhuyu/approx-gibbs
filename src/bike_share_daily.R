@@ -77,6 +77,6 @@ gibbs_fit <<- fit_gibbs(data_gibbs, n_keep, n_warmup, n_chain)
 index_good <<- (n_warmup+1):(n_warmup+n_keep)
 
 # value of performance metrics
-metric_all = cal_metric(stan_fit, gibbs_fit, y, print_out=1)
+metric_all = cal_metric(stan_fit, gibbs_fit, y, print_out=TRUE)
 
 metric_all

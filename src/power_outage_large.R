@@ -39,6 +39,7 @@ for (i in 1:max(group_id)){
 # # scale group covariate
 data_list_select[, n_cov] = min_max(data_list_select[, n_cov])
 
+# remove small counts
 ub_approx = 3
 data_list_select$outage_count[data_list_select$outage_count<ub_approx] = ub_approx
 
@@ -47,7 +48,7 @@ data_list_select$outage_count[data_list_select$outage_count<ub_approx] = ub_appr
 data_all = prepare_data(data_list_select, group_attr_id)
 
 # # sampling parameters
-n_keep = 10000
+n_keep = 5000
 n_warmup = 5000
 n_chain = 2
 
@@ -67,7 +68,7 @@ gibbs_fit = fit_gibbs(data_gibbs, n_keep, n_warmup, n_chain)
 index_good = (n_warmup+1):(n_warmup+n_keep)
 
 # value of performance metrics
-metric_all = cal_metric(stan_fit, gibbs_fit, y, print_out=1)
+metric_all = cal_metric(stan_fit, gibbs_fit, y, print_out=TRUE)
 
 metric_all
 

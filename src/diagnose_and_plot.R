@@ -216,7 +216,7 @@ cal_ESS_gibbs = function(coeff_gibbs){
 }
 
 
-cal_metric = function(stan_fit, gibbs_fit, y, print_out=1){
+cal_metric = function(stan_fit, gibbs_fit, y, print_out=TRUE){
   ## execution time
   # stan
   n_iter = 1000    # time per 1000 iterations
@@ -253,7 +253,7 @@ cal_metric = function(stan_fit, gibbs_fit, y, print_out=1){
   rmse_gibbs = rmse(y, y_hat_gibbs)
   
   # print
-  if(print_out==1){
+  if(print_out){
     # execution time
     cat('Time for each chain of samples with Stan: ', time_stan_all[,2],'\n')
     # cat('Total time for 4 chain of samples with Stan: ', time_stan_sample,'\n')
