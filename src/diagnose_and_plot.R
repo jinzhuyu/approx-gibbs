@@ -1,7 +1,7 @@
-# install.packages(c('bayesplot', 'LaplacesDemon', 'ggplot2','mcmcse'))
-# install.packages("rstan", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
+# other packages: install.packages(c('bayesplot', 'LaplacesDemon', 'ggplot2','mcmcse', 'tidyr', 'plyr'))
+# install Rstan: install.packages("rstan", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
 # Rtools 4.0: https://cran.r-project.org/bin/windows/Rtools/rtools40.html
-# R-4.1.3
+# R: 4.1.3
 library('bayesplot')
 library('ggplot2')
 library('LaplacesDemon')    # ESS function
