@@ -1,12 +1,12 @@
 # library(dplyr)  # convert factor to numeric
 library('tidyr')
-library('rstan')
-setwd('C:/GitHub/approx_gibbs_for_HBM')
 
-# dependent source code
-source('data_preprocessing.R')
-source('gibbs_all_vectorized.R')
-source('diagnostics_and_plotting.R')
+setwd('C:/code/approx-gibbs/src')
+library('rstan')
+# import dependent functions
+source('data_preprocess.R')
+source('approx_gibbs.R')
+source('diagnose_and_plot.R')
 options(digits = 5)
 
 

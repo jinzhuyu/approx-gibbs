@@ -5,9 +5,9 @@
 setwd('C:/code/approx-gibbs/src')
 library('rstan')
 # import dependent functions
-source('data_preprocessing.R')
-source('gibbs_all_vectorized.R')
-source('diagnostics_and_plotting.R')
+source('data_preprocess.R')
+source('approx_gibbs.R')
+source('diagnose_and_plot.R')
 options(digits = 5)
 
 ## import and adapt data

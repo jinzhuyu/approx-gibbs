@@ -1,12 +1,13 @@
 ################
 # Daily bike sharing data of each day
 ################
+
 setwd('C:/code/approx-gibbs/src')
-# dependent packages and functions
 library('rstan')
-source('data_preprocessing.R')
-source('gibbs_all_vectorized.R')
-source('diagnostics_and_plotting.R')
+# import dependent functions
+source('data_preprocess.R')
+source('approx_gibbs.R')
+source('diagnose_and_plot.R')
 options(digits = 5)
 
 ################
