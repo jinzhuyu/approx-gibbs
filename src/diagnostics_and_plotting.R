@@ -1,4 +1,5 @@
-
+# install.packages(c('bayesplot', 'LaplacesDemon', 'ggplot2','mcmcse'))
+# install.packages("rstan", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
 library('bayesplot')
 library('ggplot2')
 library('LaplacesDemon')    # ESS function
@@ -64,8 +65,8 @@ cal_n_eff = function(phi){
   return(n_eff_hat)
 }
 
-# error metric
 
+# error metric
 cal_y_hat_stan = function(coeff_stan_list, data_stan){
   # usage: cal_y_hat_stan(coeff_stan_list,data_stan)
   x = data_stan$X
@@ -211,6 +212,7 @@ cal_ESS_gibbs = function(coeff_gibbs){
   
   return(ESS_gibbs)
 }
+
 
 cal_metric = function(stan_fit, gibbs_fit, y, print_out=1){
   ## execution time

@@ -4,6 +4,7 @@ rep_row = function(x_vec,n){
   return(matrix(rep(x_vec,each=n),nrow=n))
 }
 
+
 min_max = function(x_vec,lb_norm=0.005){
   
   range = max(x_vec) - min(x_vec)
@@ -11,6 +12,7 @@ min_max = function(x_vec,lb_norm=0.005){
   
   return(x_norm)
 }
+
 
 find_group_id = function(data_list, group_attr_id, n_data){
   
@@ -50,7 +52,8 @@ find_len_each_group = function(data_list, group_attr_id, n_data, n_group){
 prepare_data = function(data_list, group_attr_id){
   
   len_list = length(data_list)
-  y = as.numeric(unlist(data_list[len_list])) # convert to numeric values, otherwise R will crash at the start of Stan sampling.
+  # convert to numeric values, otherwise R will crash at the start of Stan sampling.
+  y = as.numeric(unlist(data_list[len_list])) 
   X_list = data_list[-len_list]
   # X_list[group_attr_id] = log(X_list[group_attr_id])
   n_data = length(y)
@@ -62,10 +65,10 @@ prepare_data = function(data_list, group_attr_id){
   
   len_each_group = find_len_each_group(data_list, group_attr_id, n_data, n_group)
   
-  data_stan = list(y = y,  X = X, n_data = n_data, n_group=n_group, n_coeff=n_coeff, group_id=group_id,
-                   len_each_group=len_each_group)
-  data_gibbs = list(y = y,  X = X, n_data = n_data, n_group=n_group, n_coeff=n_coeff, group_id=group_id,
-                    len_each_group=len_each_group)
+  data_stan = list(y = y,  X = X, n_data = n_data, n_group=n_group, n_coeff=n_coeff,
+                   group_id=group_id, len_each_group=len_each_group)
+  data_gibbs = list(y = y,  X = X, n_data = n_data, n_group=n_group, n_coeff=n_coeff, 
+                    group_id=group_id, len_each_group=len_each_group)
   
   return(list(data_stan, data_gibbs))
 }
@@ -77,7 +80,8 @@ fit_model = function(data_all, group_attr_id){
   data_gibbs <<- data_all[[2]]
   
   # stan
-  stan_fit <<- stan(file='1d_HBM_multi_attri.stan', data = data_stan, iter = n_keep+n_warmup, warmup=n_warmup, chains = n_chain)
+  stan_fit <<- stan(file='1d_HBM_multi_attri.stan', data = data_stan,
+                    iter = n_keep+n_warmup, warmup=n_warmup, chains = n_chain)
   
   # # gibbs
   y <<- data_gibbs$y
