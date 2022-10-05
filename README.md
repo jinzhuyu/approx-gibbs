@@ -3,12 +3,12 @@ This is the implementation of the numerical experiments in our paper titled *App
 Bayesian Models for Grouped Count Data*.
 
 # Requirements
-## * Software
+* Software
 R: 4.1.3: https://cran.r-project.org/bin/windows/base/old/4.1.3/
 
 Rtools 4.0: https://cran.r-project.org/bin/windows/Rtools/rtools40.html
 
-## * Packages
+* Packages
 Rstan 2.26.13
 
 Install: ```install.packages("rstan", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))```
