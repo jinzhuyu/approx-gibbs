@@ -13,10 +13,10 @@ Bayesian Models for Grouped Count Data*.
 
 Install: ```install.packages("rstan", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))```
 
-**Others:** bayesplot 1.9.0, LaplacesDemon 16.1.6, ggplot2 3.3.6, mcmcse 1.5.1, tidyr 1.2.1, plyr 1.8.7
+**Others:** bayesplot 1.9.0, LaplacesDemon 16.1.6, invgamma 1.1, ggplot2 3.3.6, mcmcse 1.5.1, tidyr 1.2.1, plyr 1.8.7
 
-Install: ```install.packages(c('bayesplot', 'LaplacesDemon', 'ggplot2', 'mcmcse', 'tidyr', 'plyr'))```
+Install: ```install.packages(c('bayesplot', 'LaplacesDemon', 'invgamma', ggplot2', 'mcmcse', 'tidyr', 'plyr'))```
 
 # Execution
-Simply run the file name after each dataset
+Simply run the file named after each dataset
 
