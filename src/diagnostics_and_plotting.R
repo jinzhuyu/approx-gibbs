@@ -311,8 +311,8 @@ plot_time = function(x, y, x_lab, y_lab){
 
 plot_colors = c('blue','red', 'pink', "orange")
 # legend_names = sapply(1:n_chain, toString)
-n_total_sample = n_warmup+n_keep
-index_good = (n_total_sample*0.5):n_total_sample
+# n_total_sample = n_warmup+n_keep
+# index_good = (n_total_sample*0.5):n_total_sample
 # if(max(coeff)<=1e-4){
 #   axis(2,at=marks,labels=format(marks,scientific=T))
 # }
