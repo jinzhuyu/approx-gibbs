@@ -78,7 +78,7 @@ cal_exact_var = function(y){
     exact_var = pi^2/6
   }else{
     seq_neg_part = seq(1,y-1)
-    exact_var = (pi^2/6-sum(1/seq_neg_part^2))^2
+    exact_var = pi^2/6-sum(1/seq_neg_part^2)
   }
   return(exact_var)
 }
