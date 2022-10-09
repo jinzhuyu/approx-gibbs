@@ -1,47 +1,51 @@
-# show time complexity of nuts and ags
+# show quality of Gaussian approximation to the log-gamma distribution
 library(tidyr)
 library(plyr)
 library(ggplot2)
 theme_set(theme_bw())
-
 source('diagnose_and_plot.R')
 
 
 
-exact_mean = function(y){
+cal_phi_0 = function(y){
   if(y<1){
     stop('Error: the input must be >=1 in calculating the exact mean of the approximate distribution')
   }
   euler_con = 0.57721566
   if (y==1) {
-    exact_mean = -euler_con
+    phi_0 = -euler_con
   }else{
     k = seq(1, y-1)
     harm_num = sum(1/k)    # harmonic number
-    exact_mean = -euler_con + harm_num
+    phi_0 = -euler_con + harm_num
   }
-  return(exact_mean)
+  return(phi_0)
 }
 
-exact_var = function(y){
+
+cal_phi_1 = function(y){
   if(y<1){
     stop('Error: the input must be no smaller than 1 in calculating the exact var of the approximate distribution')
   }
   if(y==1){
-    exact_var = pi^2/6
+    phi_1 = pi^2/6
   }else{
     seq_neg_part = seq(1,y-1)
-    exact_var = pi^2/6 - sum(1/seq_neg_part^2)
+    phi_1 = pi^2/6 - sum(1/seq_neg_part^2)
   }
-  return(exact_var)
+  return(phi_1)
 }
+
 
 gen_log_gamma = function(v, y){
   return (1/factorial(y-1)*exp(v*y)*exp(-exp(v)))
 }
 
+
 gen_approx_norm = function(v, y){
-  return ( 1/(sqrt(2*pi*exact_var(y)))*exp((v-exact_mean(y))^2/(-2*exact_var(y))) )
+  phi_1 = cal_phi_1(y)
+  phi_0 = cal_phi_0(y)
+  return ( 1/(sqrt(2*pi*phi_1))*exp((v-phi_0)^2/(-2*phi_1)) )
 }
 
 gen_df = function(y){
@@ -66,14 +70,13 @@ gen_df = function(y){
   Approximate = gen_approx_norm(v, y)
   True = gen_log_gamma(v, y)
   df = data.frame(v, Approximate, True)
-  
   return (df)
 }
 
 plot_approx = function(df, save_fig_title, y_current){
   # stack vertically to feed into ggplot
   df = df%>%gather(key, value, True, Approximate)  
-
+  
   ggplot(df, aes(x=v, y =value, color=key, group=key)) + 
     geom_line(aes(linetype=key), size=0.65) +
     labs(x = 'v', y = 'Probability density', size=2.2) +
@@ -96,6 +99,7 @@ plot_approx = function(df, save_fig_title, y_current){
   ggsave(paste(save_fig_title, '.png', sep=''), plot = last_plot(), width=4.25, height=3, dpi=600)
 }
 
+
 main_plot_approx = function(){
   # setwd('C:/code/approx-gibbs/results')
   y_list = c(1, 2, 3, 5, 10, 20,40)
@@ -109,20 +113,14 @@ main_plot_approx = function(){
 
 cal_dist = function(y){
   n = 1e7
-  approx_norm = rnorm(n, exact_mean(y), sqrt(exact_var(y)))
-  # approx_norm = approx_norm[approx_norm>=0]
+  
+  approx_norm = rnorm(n, cal_phi_0(y), sqrt(cal_phi_1(y)))
   log_gamma = log(rgamma(n, shape=y, scale = 1))
-  # log_gamma = log_gamma[log_gamma>=0]
   
   ks_dist =  ks.test(approx_norm, log_gamma)$statistic[['D']]
   abs_diff_mean = abs(mean(approx_norm) - mean(log_gamma))
   return (c(ks_dist, abs_diff_mean))
 }
-
-# gamma = rgamma(n, shape=y, scale = 1)
-# plot(density(gamma))
-# plot(density(approx_norm), type='l', lty=3, col='blue', ylim=c(0,1), xlim=c(0,3))
-# lines(density(log_gamma), col='red')
 
 
 main_plot_dist = function(){
@@ -130,7 +128,7 @@ main_plot_dist = function(){
   dist_list = sapply(y_list, cal_dist)
   ks_list = dist_list[1,]
   abs_diff_mean_list = dist_list[2,]
-
+  
   df = data.frame(y_list, ks_list, abs_diff_mean_list)
   
   scale_diff_factor = 30 # transform data on right y axis
@@ -163,6 +161,6 @@ main_plot_dist = function(){
 }
 
 
-# main_plot_approx()
+main_plot_approx()
 
 main_plot_dist()
