@@ -126,20 +126,22 @@ cal_dist = function(y){
 main_plot_dist = function(){
   y_list = seq(1, 15, by=1)
   dist_list = sapply(y_list, cal_dist)
-  ks_list = dist_list[1,]
-  abs_diff_mean_list = dist_list[2,]
+  ks_value_scale = 100
+  ks_list = dist_list[1,]*ks_value_scale
+  diff_mean_value_scale = ks_value_scale * 10
+  abs_diff_mean_list = dist_list[2,]*diff_mean_value_scale
   
   df = data.frame(y_list, ks_list, abs_diff_mean_list)
   
-  scale_diff_factor = 30 # transform data on right y axis
+  y_scale_diff_factor = 3 # transform data on right y axis
   ggplot(df, aes(x=y_list)) +
     geom_line( aes(y=ks_list), size=0.7, color='darkred') + 
-    geom_line( aes(y=abs_diff_mean_list * scale_diff_factor), size=0.7, color='darkblue',linetype =2) +
+    geom_line( aes(y=abs_diff_mean_list * y_scale_diff_factor), size=0.7, color='darkblue',linetype =2) +
     scale_y_continuous(
       # Features of the first axis
-      name = "KS distance",
+      name = bquote("KS distance (x"~10^{-2}~')'),
       # Add a second axis and specify its features
-      sec.axis = sec_axis(~./scale_diff_factor, name="Absolute error in the mean")
+      sec.axis = sec_axis(~./y_scale_diff_factor, name=bquote("Abs. error of the mean (x"~10^{-3}~')') )
     ) +
     xlab('y') +
     scale_x_continuous(breaks = round(seq(min(y_list), max(y_list), by = 2),1)) + 
