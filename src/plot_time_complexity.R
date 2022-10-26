@@ -24,9 +24,9 @@ plot_scalability = function(df_select, lgd_x, lgd_y_vec,save_fig_title){
     geom_smooth(formula=y~0+x, method = "lm", fill = NA, se = FALSE, aes(linetype=key), size=0.8) +
     labs(x = "Size of dataset", y = 'Average sampling time\nper 1000 iter. (s)', size=2) +
     scale_color_manual(values=c('dark red', 'dark blue')) +
-    geom_text(data=r2,aes(label = paste("R^2: ", r2, sep="")),parse=T,x=lgd_x,y=lgd_y_vec, show.legend = F)+
+    geom_text(data=r2,aes(label = paste("R^2: ", r2, sep="")), parse=T, x=lgd_x, y=lgd_y_vec, show.legend = F)+
     theme(axis.text = element_text(size=12), 
-          axis.title = element_text(size=13, face="bold"),
+          axis.title = element_text(size=13),
           axis.title.y = element_text(margin = margin(t = 0, r = 5, b = 0, l = 0)),
           plot.margin = unit(c(0.2,0.7,0.2,0.2), "cm"),
           legend.position=c(0.175,0.829),
