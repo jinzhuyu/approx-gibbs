@@ -1,5 +1,5 @@
 ################
-# covid_19 test data
+# covid_19 test data with small counts (<=5) only 
 ################
 
 setwd('C:/code/approx-gibbs/src')
@@ -19,16 +19,11 @@ data_list = data_list[, c(1,3,6,7)]
 t_exp_before = 5 + 1
 data_list[,2] = data_list[,2] + t_exp_before
 
-# increase counts (linear transform) due to the presence of counts smaller than 5
-min_count = 5  # minimum count with sufficiently accurate approximation
-test_pos = data_list[, 4]   
-# remove rows with zero positive cases
-if (min(test_pos) <= min_count){
-    data_list[, 4] = data_list[, 4] + min_count
-    # data_list_new = data_list[which(!test_pos == 0),]
-  }else{
-    data_list_new = data_list
-  }
+# keep only small positive count to see the performance
+test_pos = data_list[, 4] 
+data_list_new = data_list[which(test_pos >=1 & test_pos <= 5),]
+# run to test if increasing counts by 5 will lead to better performance
+# data_list_new[, 4] = data_list_new[, 4] + 5
 
 # add a group-level covariate~norm(0,1)
 # find group id
@@ -61,9 +56,6 @@ data_list_new = cbind(data_list_new,log_t, log_t2, log_t3, cov_group_rep)
 # remove study name and reorder the columns
 data_list_select = data_list_new[,c(5,6,7,3,8,4)]
 
-# # reduce each count by 1 to see the sampling time.
-# data_list_select$test_pos = data_list_select$test_pos - 1
-
 # data features
 n_cov = length(data_list_select[1,]) - 1
 group_attr_id = n_cov
@@ -75,36 +67,30 @@ for (i in 1:(n_cov-1)){
   data_list_select[,i] = min_max(data_list_select[,i])
 }
 
+# format data for each model
 data_all = prepare_data(data_list_select, group_attr_id)
 data_stan = data_all[[1]]
 data_gibbs = data_all[[2]]
 
 # sampling parameters
-n_keep = 6000
-n_warmup = 6000
-n_chain = 2 #4
+n_keep = 10000
+n_warmup = 8000
+n_chain = 4
 
 # fit model
 # stan
-stan_fit = stan(file='1d_HBM_multi_attri.stan', data = data_stan,
-                iter = n_keep+n_warmup,warmup=n_warmup, chains = n_chain)
+# stan_fit = stan(file='1d_HBM_multi_attri.stan', data = data_stan,
+#                 iter = n_keep+n_warmup,warmup=n_warmup, chains = n_chain)
 # gibbs
 y = data_gibbs$y
 exact_mean = sapply(y, cal_exact_mean)
 exact_var = sapply(y, cal_exact_var)
+
 gibbs_fit = fit_gibbs(data_gibbs, n_keep, n_warmup, n_chain)
 index_good = (n_warmup+1):(n_warmup+n_keep)
 
 # value of performance metrics
 metric_all = cal_metric(stan_fit, gibbs_fit, y, print_out=TRUE)
 metric_all
-
-
-
-
-
-
-
-
 
 
