@@ -19,11 +19,13 @@ data_list = data_list[, c(1,3,6,7)]
 t_exp_before = 5 + 1
 data_list[,2] = data_list[,2] + t_exp_before
 
-# keep only small positive count to see the performance
-test_pos = data_list[, 4] 
-data_list_new = data_list[which(test_pos >=0 & test_pos <= 5),]
-# run to test if increasing counts by 5 will lead to better performance
-data_list_new[, 4] = data_list_new[, 4] + 1
+# select or transform counts
+test_pos = data_list[, 4]
+# run if only use counts in [1, 5] 
+data_list_new = data_list[which(test_pos >=1 & test_pos <= 5),]
+# run if there are zeros in the count data
+data_list_new = data_list
+data_list_new[test_pos ==0, 4] = data_list_new[test_pos ==0, 4] + 5
 
 # add a group-level covariate~norm(0,1)
 # find group id
@@ -73,9 +75,10 @@ data_stan = data_all[[1]]
 data_gibbs = data_all[[2]]
 
 # sampling parameters
-n_keep = 10000
+n_keep = 8000
 n_warmup = 8000
 n_chain = 4
+
 
 # fit model
 # stan
@@ -92,5 +95,4 @@ index_good = (n_warmup+1):(n_warmup+n_keep)
 # value of performance metrics
 metric_all = cal_metric(stan_fit, gibbs_fit, y, print_out=TRUE)
 metric_all
-
 
